@@ -134,7 +134,7 @@ def get_uniq_count(data):
 for provider in providers:
     last_month = 0
     percent_growth = 0
-    print(f'{provider}')
+    print(f'{provider}:')
     print('\t\t\tMonth\t\t Unique Apps\t\tGrowth')
     for month in months:
         metric = get_recipe_metrics(month[0], month[1], provider.lower())
