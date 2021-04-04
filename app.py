@@ -43,7 +43,7 @@ def get_recipe_metrics(start, end, recipe='lagoon'):
     start = int(datetime.strptime(start, '%d %B %Y').timestamp())
     end = int(datetime.strptime(end, '%d %B %Y').timestamp())
     doc = {
-      'size': 500,
+      'size': 10000,
       'sort': [
         {
           'created': {
@@ -105,6 +105,8 @@ def get_recipe_metrics(start, end, recipe='lagoon'):
     if recipe == 'localdev':
         del doc['query']['filtered']['query']['query_string']['query']
         doc['query']['filtered']['query']['query_string']['query'] = f'product: {recipe}'
+    elif recipe == 'allapps':
+        del doc['query']['filtered']['query']
 
     res = es.search(
             index='metrics',
@@ -117,6 +119,7 @@ def get_recipe_metrics(start, end, recipe='lagoon'):
 
     while scroll_size > 0:
         "Scrolling..."
+
         res = es.scroll(
                 body=doc,
                 scroll_id=sid,
@@ -130,6 +133,8 @@ def get_recipe_metrics(start, end, recipe='lagoon'):
 
 
 months = [
+    # ['01 April 2020', '30 April 2020'],
+    # ['01 May 2020', '31 May 2020'],
     # ['01 June 2020', '30 June 2020'],
     # ['01 July 2020', '31 July 2020'],
     # ['01 August 2020', '31 August 2020'],
@@ -142,8 +147,9 @@ months = [
     ['01 March 2021', '31 March 2021'],
     ['01 April 2021', '03 April 2021'],
 ]
-providers = [
-        # 'acquia',
+types = [
+        'allapps',
+        'acquia',
         'backdrop',
         'custom',
         'drupal6',
@@ -163,7 +169,7 @@ providers = [
         'wordpress',
     ]
 
-for provider in providers:
+for provider in types:
     last_month_uniq = 0
     percent_growth_uniq = 0
     last_month_commands = 0
