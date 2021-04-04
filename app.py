@@ -130,15 +130,15 @@ def get_recipe_metrics(start, end, recipe='lagoon'):
 
 
 months = [
-    ['01 June 2020', '30 June 2020'],
-    ['01 July 2020', '31 July 2020'],
-    ['01 August 2020', '31 August 2020'],
-    ['01 September 2020', '30 September 2020'],
-    ['01 October 2020', '31 October 2020'],
-    ['01 November 2020', '30 November 2020'],
-    ['01 December 2020', '31 December 2020'],
-    ['01 January 2021', '31 January 2021'],
-    ['01 February 2021', '28 February 2021'],
+    # ['01 June 2020', '30 June 2020'],
+    # ['01 July 2020', '31 July 2020'],
+    # ['01 August 2020', '31 August 2020'],
+    # ['01 September 2020', '30 September 2020'],
+    # ['01 October 2020', '31 October 2020'],
+    # ['01 November 2020', '30 November 2020'],
+    # ['01 December 2020', '31 December 2020'],
+    # ['01 January 2021', '31 January 2021'],
+    # ['01 February 2021', '28 February 2021'],
     ['01 March 2021', '31 March 2021'],
     ['01 April 2021', '03 April 2021'],
 ]
