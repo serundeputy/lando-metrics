@@ -145,39 +145,39 @@ months = [
     # ['01 January 2021', '31 January 2021'],
     # ['01 February 2021', '28 February 2021'],
     ['01 March 2021', '31 March 2021'],
-    ['01 April 2021', '03 April 2021'],
+    ['01 April 2021', '05 April 2021'],
 ]
 types = [
-        'allapps',
+        # 'allapps',
         'acquia',
-        'backdrop',
-        'custom',
-        'drupal6',
-        'drupal7',
-        'drupal8',
-        'drupal9',
-        'joomla',
-        'lagoon',
-        'laravel',
-        'lamp',
-        'lemp',
-        'localdev',
-        'mean',
-        'pantheon',
-        'platformsh',
-        'symfony',
-        'wordpress',
+        # 'backdrop',
+        # 'custom',
+        # 'drupal6',
+        # 'drupal7',
+        # 'drupal8',
+        # 'drupal9',
+        # 'joomla',
+        # 'lagoon',
+        # 'laravel',
+        # 'lamp',
+        # 'lemp',
+        # 'localdev',
+        # 'mean',
+        # 'pantheon',
+        # 'platformsh',
+        # 'symfony',
+        # 'wordpress',
     ]
 
-for provider in types:
+for type in types:
     last_month_uniq = 0
     percent_growth_uniq = 0
     last_month_commands = 0
     percent_growth_commands = 0
-    print(f'{provider}:')
+    print(f'{type}:')
     print('\t\tMonth\t\t Unique Apps\t\tGrowth\t\tNum Commands\t\tGrowth')
     for month in months:
-        metric = get_recipe_metrics(month[0], month[1], provider.lower())
+        metric = get_recipe_metrics(month[0], month[1], type.lower())
         commands = get_metric_count(metric)
         uniq_apps = get_metric_count(metric, ['_source.app'])
         if last_month_uniq > 0:
