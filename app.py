@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from elasticsearch import Elasticsearch, helpers, exceptions
 import os
 import pandas as pd
+from tabulate import tabulate
 
 load_dotenv()
 QBOX_USER = os.getenv('QBOX_USER')
@@ -145,7 +146,7 @@ months = [
     # ['01 January 2021', '31 January 2021'],
     # ['01 February 2021', '28 February 2021'],
     ['01 March 2021', '31 March 2021'],
-    ['01 April 2021', '05 April 2021'],
+    ['01 April 2021', '30 April 2021'],
 ]
 types = [
         # 'allapps',
@@ -157,40 +158,61 @@ types = [
         # 'drupal8',
         # 'drupal9',
         # 'joomla',
-        # 'lagoon',
+        'lagoon',
         # 'laravel',
         # 'lamp',
         # 'lemp',
-        # 'localdev',
+        'localdev',
         # 'mean',
-        # 'pantheon',
-        # 'platformsh',
+        'pantheon',
+        'platformsh',
         # 'symfony',
         # 'wordpress',
     ]
 
 for type in types:
-    last_month_uniq = 0
-    percent_growth_uniq = 0
+    last_month_uniq_apps = 0
+    percent_growth_uniq_apps = 0
+    last_month_uniq_users = 0
+    percent_growth_uniq_users = 0
     last_month_commands = 0
     percent_growth_commands = 0
+    data = []
     print(f'{type}:')
-    print('\t\tMonth\t\t Unique Apps\t\tGrowth\t\tNum Commands\t\tGrowth')
+    header = [
+                'Month',
+                'Unique Users',
+                'Growth',
+                'Unique Apps',
+                'Growth',
+                'Num Commands',
+                'Growth'
+            ]
     for month in months:
         metric = get_recipe_metrics(month[0], month[1], type.lower())
         commands = get_metric_count(metric)
         uniq_apps = get_metric_count(metric, ['_source.app'])
-        if last_month_uniq > 0:
-            uniq_app_pg = compute_growth(uniq_apps, last_month_uniq)
+        uniq_users = get_metric_count(metric, ['_source.instance'])
+        if last_month_uniq_apps > 0:
+            uniq_app_pg = compute_growth(uniq_apps, last_month_uniq_apps)
+            uniq_users_pg = compute_growth(uniq_users, last_month_uniq_users)
             commands_pg = compute_growth(commands, last_month_commands)
         else:
             uniq_app_pg = 'NA'
+            uniq_users_pg = 'NA'
             commands_pg = 'NA'
 
-        last_month_uniq = uniq_apps
+        last_month_uniq_apps = uniq_apps
+        last_month_uniq_users = uniq_users
         last_month_commands = commands
-        print(
-            f'\t\t{month_and_year(month[0])}'
-            + f'\t\t{uniq_apps}\t\t{uniq_app_pg}'
-            + f'\t\t{commands}\t\t\t{commands_pg}'
-        )
+        data.append([
+                        month_and_year(month[0]),
+                        uniq_users,
+                        uniq_users_pg,
+                        uniq_apps,
+                        uniq_app_pg,
+                        commands,
+                        commands_pg
+                    ])
+    print(tabulate(data, header))
+    print('\n')
